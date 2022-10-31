@@ -1,6 +1,5 @@
-package pageObject;
+package pageobject;
 
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,29 +30,25 @@ public class NewOrderPage {
     By fieldsError = By.xpath(".//div[contains(@class, 'Input_ErrorMessage') and contains(@class, 'Visible')]");
 
 
-    public NewOrderPage(WebDriver driver){
+    public NewOrderPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public MainPage clickScooterLogo(){
+    public MainPage clickScooterLogo() {
         driver.findElement(scooterButton).click();
-
         return new MainPage(driver);
     }
 
-    public YandexPage clickYandexLogo(){
+    public YandexPage clickYandexLogo() {
         ArrayList tabs = new ArrayList(driver.getWindowHandles());
-
         driver.findElement(yaButton).click();
         ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
         driver.switchTo().window(newTab.get(1));
-
         return new YandexPage(driver);
     }
 
-    public NewOrderPage fillFirstPartOfFormAndClickNext(String name, String lastname, String address, String station, String phone){
+    public NewOrderPage fillFirstPartOfFormAndClickNext(String name, String lastname, String address, String station, String phone) {
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(firstOrderStepBlock));
-
         driver.findElement(nameField).sendKeys(name);
         driver.findElement(lastnameField).sendKeys(lastname);
         driver.findElement(addressField).sendKeys(address);
@@ -61,47 +56,41 @@ public class NewOrderPage {
         driver.findElement(By.xpath(".//div[contains(@class, 'Order_Text') and contains(text(), '" + station + "')]")).click();
         driver.findElement(phoneField).sendKeys(phone);
         driver.findElement(nextButton).click();
-
         return this;
     }
 
-    public int checkErrorsOnPage(){
+    public int checkErrorsOnPage() {
         int count = driver.findElements(fieldsError).size();
         return count;
     }
 
-    public NewOrderPage fillSecondPartOfFormAndClickNext(String term, String color, String commentText){
+    public NewOrderPage fillSecondPartOfFormAndClickNext(String term, String color, String commentText) {
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(dateField));
         driver.findElement(dateField).click();
         driver.findElement(datePoint).click();
         driver.findElement(termList).click();
         driver.findElement(By.xpath(".//div[contains(@class, 'Dropdown-menu')]/div[contains(text(), '" + term + "')]")).click();
-        if ("Черный".equals(color) && !driver.findElement(colorBlack).isSelected()){
+        if ("Черный".equals(color) && !driver.findElement(colorBlack).isSelected()) {
             driver.findElement(colorBlack).click();
-        } else if ("Серый".equals(color) && !driver.findElement(colorGrey).isSelected()){
+        } else if ("Серый".equals(color) && !driver.findElement(colorGrey).isSelected()) {
             driver.findElement(colorGrey).click();
         }
         driver.findElement(comment).sendKeys(commentText);
         driver.findElement(makeOrder).click();
-
         return this;
     }
 
-    public NewOrderPage confirmOrder(){
+    public NewOrderPage confirmOrder() {
         driver.findElement(confirm).click();
-
         return this;
     }
 
-    public boolean checkThatConfirmationWindowIsShow(){
+    public boolean checkThatConfirmationWindowIsShow() {
         new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(confirmationWindow));
-
-        if(driver.findElement(confirmationWindow).isDisplayed()) {
+        if (driver.findElement(confirmationWindow).isDisplayed()) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-
 }
